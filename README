@@ -1,0 +1,126 @@
+# 📦 Project Template -- React + Go REST API + MySQL (with Todo Table)
+
+This project is a full-stack template consisting of:
+
+-   **Frontend:** React (Vite)
+-   **Backend:** Go REST API
+-   **Database:** MySQL
+-   **Includes a Todo table**
+
+------------------------------------------------------------------------
+
+## 📁 Folder Structure
+
+    /project-root
+     ├── /Web            # React (Vite) frontend
+     ├── /server         # Go backend (REST API)
+     ├── README.md
+     └── .env            # Environment variables
+
+------------------------------------------------------------------------
+
+## ⚙️ Environment Variables
+
+### Backend (.env in /server or project root)
+
+    # Database / Server configuration
+    DB_USER=            # Your database username
+    DB_PASSWORD=        # Your database password
+    DB_HOST=localhost   # Database host (default: localhost)
+    DB_PORT=3306        # Database port
+    DB_NAME=            # Your database name
+
+    Server_PORT=3000    # Server port (default: 3000)
+
+    # Website configuration
+    VITE_Server_IP=http://localhost  # Server host
+    VITE_Server_PORT=3000            # Server port
+    VITE_Web_PORT=5000               # Web port
+
+------------------------------------------------------------------------
+
+## 🗄️ Database Setup
+
+Create the database:
+
+    CREATE DATABASE <db_name>;
+    USE <db_name>;
+
+### 📌 Create Todo Table
+
+    CREATE TABLE todos (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        task VARCHAR(255) NOT NULL,
+        completed TINYINT(1) NOT NULL DEFAULT 0
+    );
+
+The table stores:
+
+-   **id:** Primary key\
+-   **title:** Todo title\
+-   **description:** Optional description\
+-   **completed:** Whether the todo is finished\
+-   **created_at:** Creation date
+
+------------------------------------------------------------------------
+
+## ▶️ Running the Project
+
+### Backend (Go)
+
+    cd server
+    go mod tidy
+    go run main.go
+
+Backend runs at: `http://localhost:3000`
+
+### Frontend (React)
+
+    cd web
+    pnpm install
+    pnpm run dev
+
+Frontend runs at: `http://localhost:5000`
+
+------------------------------------------------------------------------
+
+## 🔌 API Structure (Todo Example)
+
+    GET    /api/todos
+    GET    /api/todos/:id
+    POST   /api/todos
+    PUT    /api/todos/:id
+    DELETE /api/todos/:id
+
+**POST Body Example:**
+
+    {
+      "title": "Buy milk",
+      "description": "Remember lactose-free",
+      "completed": false
+    }
+
+------------------------------------------------------------------------
+
+## 🛠️ Building
+
+### Backend
+
+    cd server
+    go build -o server
+
+### Frontend
+
+    cd web
+    pnpm run build
+
+------------------------------------------------------------------------
+
+## ❓ Troubleshooting
+
+  Problem                  Solution
+  ------------------------ --------------------------------------------
+  No DB connection         Check username and password in `.env`
+  Backend not responding   Check Server_PORT and ensure Go is running
+  Frontend CORS errors     Check CORS configuration in Go API
+  Port already in use      Change port in `.env`
