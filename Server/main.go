@@ -9,8 +9,8 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
 
-	"todo-api/database"
-	"todo-api/routes"
+	"Server/database"
+	"Server/routes"
 )
 
 // ANSI escape codes for farger

@@ -1,4 +1,4 @@
-module todo-api
+module Server
 
 go 1.25.4
 
