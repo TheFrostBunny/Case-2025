@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+  <meta charset="UTF-8">
+  <title>API Testside - Treningssenter</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body { font-family: sans-serif; background: #f8f8f8; margin: 0; padding: 0; }
+    .container { max-width: 600px; margin: 40px auto; background: #fff; border-radius: 8px; box-shadow: 0 2px 8px #ccc; padding: 32px; }
+    h1 { margin-bottom: 24px; }
+    label { display: block; margin-top: 16px; }
+    input, select, textarea { width: 100%; margin-bottom: 12px; padding: 8px; border-radius: 4px; border: 1px solid #ccc; }
+    button { padding: 10px 24px; border-radius: 4px; border: none; background: #e53e3e; color: #fff; font-weight: bold; cursor: pointer; }
+    button:hover { background: #c53030; }
+    .result { margin-top: 24px; background: #f1f1f1; padding: 12px; border-radius: 4px; }
+    .api-group { margin-bottom: 32px; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Test API - Treningssenter</h1>
+    <div class="api-group">
+      <h2>Bli medlem</h2>
+      <form id="memberForm">
+        <label>Navn <input name="navn" required></label>
+        <label>Epost <input name="epost" required type="email"></label>
+        <label>Telefon <input name="telefon" required></label>
+        <label>Passord <input name="passord" required type="password"></label>
+        <label>Utløpsdato <input name="utlopsdato" required type="date"></label>
+        <label>Medlemskap
+          <select name="medlemskap_id" id="medlemskapSelect" required>
+            <option value="">Velg medlemskap...</option>
+          </select>
+        </label>
+        <label>
+          <input type="checkbox" name="har_treningstimer" value="1"> Legg til treningstimer (+100 kr/mnd)
+        </label>
+        <button type="submit">Bli medlem</button>
+      </form>
+      <div id="memberResult" class="result"></div>
+    </div>
+    <div class="api-group">
+      <h2>Logg inn</h2>
+      <form id="loginForm">
+        <label>Epost <input name="epost" required type="email"></label>
+        <label>Passord <input name="passord" required type="password"></label>
+        <button type="submit">Logg inn</button>
+      </form>
+      <div id="loginResult" class="result"></div>
+    </div>
+    <div class="api-group">
+      <h2>Hent alle brukere</h2>
+      <button id="getUsersBtn">Hent brukere</button>
+      <div id="usersResult" class="result"></div>
+    </div>
+    <div class="api-group">
+      <h2>Hent alle medlemskap</h2>
+      <button id="getMembershipsBtn">Hent medlemskap</button>
+      <div id="membershipsResult" class="result"></div>
+    </div>
+    <div class="api-group">
+      <h2>Hent alle betalinger</h2>
+      <button id="getPaymentsBtn">Hent betalinger</button>
+      <div id="paymentsResult" class="result"></div>
+    </div>
+  </div>
+  <script>
+    const api = "http://localhost:3000";
+
+    // Hent medlemskap og fyll select
+    async function loadMemberships() {
+      const res = await fetch(api + "/medlemskap");
+      try {
+        const data = await res.json();
+        const select = document.getElementById("medlemskapSelect");
+        if (Array.isArray(data)) {
+          data.forEach(m => {
+            const opt = document.createElement("option");
+            opt.value = m.medlemskap_id || m.MedlemskapID;
+            opt.textContent = `${m.type_medlemskap || m.TypeMedlemskap} (${m.pris || m.Pris} kr)`;
+            select.appendChild(opt);
+          });
+        }
+      } catch {
+        // fallback hvis ikke json
+      }
+    }
+    loadMemberships();
+
+    document.getElementById("memberForm").onsubmit = async e => {
+      e.preventDefault();
+      const body = Object.fromEntries(new FormData(e.target));
+      // Valider medlemskap_id
+      const medlemskapId = parseInt(body.medlemskap_id);
+      if (!medlemskapId || isNaN(medlemskapId)) {
+        document.getElementById("memberResult").textContent = "Du må velge et medlemskap!";
+        return;
+      }
+      body.medlemskap_id = medlemskapId;
+      // Legg til treningstimer hvis valgt
+      body.har_treningstimer = body.har_treningstimer === "1" ? true : false;
+      const res = await fetch(api + "/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body)
+      });
+      document.getElementById("memberResult").textContent = await res.text();
+    };
+    document.getElementById("loginForm").onsubmit = async e => {
+      e.preventDefault();
+      const body = Object.fromEntries(new FormData(e.target));
+      const res = await fetch(api + "/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body)
+      });
+      document.getElementById("loginResult").textContent = await res.text();
+    };
+    document.getElementById("getUsersBtn").onclick = async () => {
+      const res = await fetch(api + "/kunde");
+      document.getElementById("usersResult").textContent = await res.text();
+    };
+    document.getElementById("getMembershipsBtn").onclick = async () => {
+      const res = await fetch(api + "/medlemskap");
+      document.getElementById("membershipsResult").textContent = await res.text();
+    };
+    document.getElementById("getPaymentsBtn").onclick = async () => {
+      const res = await fetch(api + "/betaling");
+      document.getElementById("paymentsResult").textContent = await res.text();
+    };
+  </script>
+</body>
+</html>

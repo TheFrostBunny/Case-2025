@@ -29,14 +29,39 @@ func CreateMedlemskapHandler(db *sql.DB) gin.HandlerFunc {
 func GetMedlemskapHandler(db *sql.DB) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		idStr := c.Query("id")
+		if idStr == "" {
+			// Returner alle medlemskap
+			rows, err := db.Query("SELECT MedlemskapID, TypeMedlemskap, Pris FROM Medlemskap")
+			if err != nil {
+				c.JSON(500, gin.H{"error": "Database error", "details": err.Error()})
+				return
+			}
+			defer rows.Close()
+			var medlemskap []models.Medlemskap
+			for rows.Next() {
+				var m models.Medlemskap
+				if err := rows.Scan(&m.MedlemskapID, &m.TypeMedlemskap, &m.Pris); err != nil {
+					c.JSON(500, gin.H{"error": "Feil ved lesing av medlemskap", "details": err.Error()})
+					return
+				}
+				medlemskap = append(medlemskap, m)
+			}
+			// Sjekk om ingen medlemskap
+			if len(medlemskap) == 0 {
+				c.JSON(200, []models.Medlemskap{})
+				return
+			}
+			c.JSON(200, medlemskap)
+			return
+		}
 		id, err := strconv.Atoi(idStr)
 		if err != nil {
-			c.JSON(400, gin.H{"error": "Invalid ID"})
+			c.JSON(400, gin.H{"error": "Ugyldig ID", "details": err.Error()})
 			return
 		}
 		m, err := database.GetMedlemskap(db, id)
 		if err != nil {
-			c.JSON(404, gin.H{"error": "Not found"})
+			c.JSON(404, gin.H{"error": "Medlemskap ikke funnet", "details": err.Error()})
 			return
 		}
 		c.JSON(200, m)
@@ -63,14 +88,42 @@ func CreateKundeHandler(db *sql.DB) gin.HandlerFunc {
 func GetKundeHandler(db *sql.DB) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		idStr := c.Query("id")
+		if idStr == "" {
+			// Returner alle brukere med info om treningsprogrammer
+			rows, err := db.Query("SELECT Kundenummer, Navn, Epost, Telefon, MedlemskapID, Utløpsdato FROM Kunder")
+			if err != nil {
+				c.JSON(500, gin.H{"error": "Database error", "details": err.Error()})
+				return
+			}
+			defer rows.Close()
+			type KundeMedTrening struct {
+				models.Kunde
+				HarTreningstimer bool `json:"harTreningstimer"`
+			}
+			var brukere []KundeMedTrening
+			for rows.Next() {
+				var k models.Kunde
+				if err := rows.Scan(&k.Kundenummer, &k.Navn, &k.Epost, &k.Telefon, &k.MedlemskapID, &k.Utlopsdato); err != nil {
+					c.JSON(500, gin.H{"error": "Feil ved lesing av bruker", "details": err.Error()})
+					return
+				}
+				// Sjekk om bruker har treningsprogrammer
+				var count int
+				err = db.QueryRow("SELECT COUNT(*) FROM Kunde_Program WHERE Kundenummer = ?", k.Kundenummer).Scan(&count)
+				harTrening := count > 0
+				brukere = append(brukere, KundeMedTrening{Kunde: k, HarTreningstimer: harTrening})
+			}
+			c.JSON(200, brukere)
+			return
+		}
 		id, err := strconv.Atoi(idStr)
 		if err != nil {
-			c.JSON(400, gin.H{"error": "Invalid ID"})
+			c.JSON(400, gin.H{"error": "Ugyldig ID", "details": err.Error()})
 			return
 		}
 		k, err := database.GetKunde(db, id)
 		if err != nil {
-			c.JSON(404, gin.H{"error": "Not found"})
+			c.JSON(404, gin.H{"error": "Bruker ikke funnet", "details": err.Error()})
 			return
 		}
 		c.JSON(200, k)

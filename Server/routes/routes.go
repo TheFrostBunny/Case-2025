@@ -13,7 +13,8 @@ func RegisterRoutes(r *gin.Engine) {
 	})
 
 	// Auth-ruter
-	r.POST("/auth/login", handlers.Login)
+	r.POST("/auth/login", handlers.LoginHandler(database.DB))
+	r.POST("/register", handlers.Register)
 
 	// Medlemskap
 	r.POST("/medlemskap", handlers.CreateMedlemskapHandler(database.DB))
