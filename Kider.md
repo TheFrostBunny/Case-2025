@@ -1,0 +1,1 @@
+Logo laget med KI. Dato: 01.12.2025 Promt: kan du lage en logo til en trenginsenter

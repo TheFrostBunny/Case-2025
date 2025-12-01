@@ -16,7 +16,7 @@ function App() {
     <BrowserRouter>
       <div className="navbar bg-base-100 shadow">
         <div className="flex-1">
-          <Link to="/" className="btn btn-ghost text-xl">Treningssenter</Link>
+          <Link to="/" className="btn btn-ghost text-xl">Treningshjørnet</Link>
         </div>
         <div className="flex-none gap-2">
           <ul className="menu menu-horizontal px-1">

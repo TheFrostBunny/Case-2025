@@ -16,7 +16,7 @@ interface MembershipForm {
   telefon: string;
   passord: string;
   utlopsdato: string;
-  medlemskap_id: string; // keep as string for select value
+  medlemskap_id: string;
   har_treningstimer: boolean;
 }
 
