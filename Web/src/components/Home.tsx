@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useAppSelector } from '../store';
 import { fetchMemberships, fetchGroupClasses } from '../api/client';
+import { galleryImages } from '../data/homeImages';
 
 interface MembershipType { medlemskap_id?: number; MedlemskapID?: number; type_medlemskap?: string; TypeMedlemskap?: string; pris?: number; Pris?: number; }
 interface Time { TimeID?: number; time_id?: number; Dato?: string; dato?: string; Klokkeslett?: string; klokkeslett?: string; Varighet?: number; varighet?: number; }
@@ -9,6 +10,7 @@ export default function Home() {
   const { token } = useAppSelector(s => s.auth);
   const [memberships, setMemberships] = useState<MembershipType[]>([]);
   const [times, setTimes] = useState<Time[]>([]);
+  const [currentSlide, setCurrentSlide] = useState(0);
 
   useEffect(() => {
     fetchMemberships().then(setMemberships).catch(() => setMemberships([]));
@@ -25,6 +27,46 @@ export default function Home() {
 
   return (
     <div className="min-h-[calc(100vh-4rem)]">
+      {/* Promo banner under navbar */}
+      <section className="bg-primary text-primary-content">
+        <div className="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between gap-4">
+          <p className="font-semibold text-sm md:text-base">
+            0,-/mnd. til april – ingen binding!
+          </p>
+          <a href="/medlemskap" className="btn btn-sm md:btn-md btn-secondary">Gå til kampanjer</a>
+        </div>
+      </section>
+      {/* Bildekarusell */}
+      <section className="bg-base-100">
+        <div className="max-w-6xl mx-auto px-4 py-6">
+          <div className="carousel w-full rounded-xl shadow">
+            {galleryImages.map((src, idx) => (
+              <div
+                key={idx}
+                className={`carousel-item relative w-full ${idx === currentSlide ? "block" : "hidden"}`}
+              >
+                <img src={src} alt={`Galleri ${idx+1}`} className="w-full h-64 md:h-96 object-cover" />
+                <div className="absolute left-4 right-4 bottom-4 flex justify-between">
+                  <button
+                    type="button"
+                    className="btn btn-circle btn-sm"
+                    onClick={() => setCurrentSlide((prev) => (prev === 0 ? galleryImages.length - 1 : prev - 1))}
+                  >
+                    ❮
+                  </button>
+                  <button
+                    type="button"
+                    className="btn btn-circle btn-sm"
+                    onClick={() => setCurrentSlide((prev) => (prev === galleryImages.length - 1 ? 0 : prev + 1))}
+                  >
+                    ❯
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
       {/* Hero */}
       <section className="hero bg-base-200 py-16">
         <div className="hero-content flex-col lg:flex-row gap-10">
@@ -45,6 +87,7 @@ export default function Home() {
               )}
             </div>
           </div>
+          {/* Fjernet hero-bilde */}
           <div className="card bg-base-100 shadow-xl w-full max-w-md">
             <div className="card-body">
               <h2 className="card-title">Hvorfor oss?</h2>
