@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useAppSelector } from '../store';
 import { fetchMemberships, fetchGroupClasses } from '../api/client';
 import { galleryImages } from '../data/homeImages';
+import { Link } from 'react-router-dom';
 
 interface MembershipType { medlemskap_id?: number; MedlemskapID?: number; type_medlemskap?: string; TypeMedlemskap?: string; pris?: number; Pris?: number; }
 interface Time { TimeID?: number; time_id?: number; Dato?: string; dato?: string; Klokkeslett?: string; klokkeslett?: string; Varighet?: number; varighet?: number; }
@@ -27,7 +28,6 @@ export default function Home() {
 
   return (
     <div className="min-h-[calc(100vh-4rem)]">
-      {/* Promo banner under navbar */}
       <section className="bg-primary text-primary-content">
         <div className="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between gap-4">
           <p className="font-semibold text-sm md:text-base">
@@ -36,7 +36,7 @@ export default function Home() {
           <a href="/medlemskap" className="btn btn-sm md:btn-md btn-secondary">Gå til kampanjer</a>
         </div>
       </section>
-      {/* Bildekarusell */}
+
       <section className="bg-base-100">
         <div className="max-w-6xl mx-auto px-4 py-6">
           <div className="carousel w-full rounded-xl shadow">
@@ -67,7 +67,7 @@ export default function Home() {
           </div>
         </div>
       </section>
-      {/* Hero */}
+
       <section className="hero bg-base-200 py-16">
         <div className="hero-content flex-col lg:flex-row gap-10">
           <div className="max-w-xl">
@@ -76,18 +76,18 @@ export default function Home() {
             <div className="flex flex-wrap gap-3">
               {!token ? (
                 <>
-                  <a href="/medlemskap" className="btn btn-primary">Bli medlem</a>
-                  <a href="/login" className="btn btn-outline">Logg inn</a>
+                  <Link to="/medlemskap" className="btn btn-primary">Bli medlem</Link>
+                  <Link to="/login" className="btn btn-outline">Logg inn</Link>
                 </>
               ) : (
                 <>
-                  <a href="/profil" className="btn btn-primary">Min profil</a>
-                  <a href="/gruppetimer" className="btn btn-secondary">Gruppe timer</a>
+                  <Link to="/profil" className="btn btn-primary">Min profil</Link>
+                  <Link to="/gruppetimer" className="btn btn-secondary">Gruppe timer</Link>
                 </>
               )}
             </div>
           </div>
-          {/* Fjernet hero-bilde */}
+
           <div className="card bg-base-100 shadow-xl w-full max-w-md">
             <div className="card-body">
               <h2 className="card-title">Hvorfor oss?</h2>
@@ -102,7 +102,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Membership pricing */}
       <section className="py-12 max-w-6xl mx-auto px-4">
         <h2 className="text-3xl font-semibold mb-6">Medlemskap</h2>
         <div className="grid md:grid-cols-3 gap-6">
@@ -129,7 +128,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Group classes preview */}
       <section className="py-12 bg-base-200">
         <div className="max-w-6xl mx-auto px-4">
           <h2 className="text-3xl font-semibold mb-6">Neste gruppetimer</h2>
@@ -157,14 +155,13 @@ export default function Home() {
         </div>
       </section>
 
-      {/* CTA */}
       {!token && (
         <section className="py-16 text-center">
           <h2 className="text-3xl font-semibold mb-4">Klar til å starte?</h2>
           <p className="mb-6 opacity-70">Registrer deg og kom i gang med treningen i dag.</p>
           <div className="flex justify-center gap-4">
-            <a href="/medlemskap" className="btn btn-primary">Bli medlem</a>
-            <a href="/login" className="btn btn-outline">Logg inn</a>
+            <Link to="/medlemskap" className="btn btn-primary">Bli medlem</Link>
+            <Link to="/login" className="btn btn-outline">Logg inn</Link>
           </div>
         </section>
       )}
