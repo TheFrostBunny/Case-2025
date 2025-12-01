@@ -1,6 +1,13 @@
 Logo laget med KI. Dato: 01.12.2025 Promt: kan du lage en logo til en trenginsenter
 
 
+Nettsteder jeg har brukt:
+https://daisyui.com/
+https://tailwindcss.com/docs/installation/using-vite
+https://vite.dev/
+https://go.dev/doc/tutorial/database-access
+
+
 
 Bilder hentet fra:
 https://www.smp.no/magasin/sprek/i/BWQ9aG/en-vanlig-feil-kan-oedelegge-treningsoekta-her-er-ekspertenes-ni-beste-oppvarmingsoevelser
