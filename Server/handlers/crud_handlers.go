@@ -4,6 +4,7 @@ import (
 	"Server/database"
 	"Server/models"
 	"database/sql"
+	"fmt"
 	"strconv"
 
 	"github.com/gin-gonic/gin"
@@ -87,7 +88,11 @@ func CreateKundeHandler(db *sql.DB) gin.HandlerFunc {
 
 func GetKundeHandler(db *sql.DB) gin.HandlerFunc {
 	return func(c *gin.Context) {
+		// Støtt både query parameter ?id= og path parameter /kunde/:id
 		idStr := c.Query("id")
+		if idStr == "" {
+			idStr = c.Param("id")
+		}
 		if idStr == "" {
 			// Returner alle brukere med info om treningsprogrammer
 			rows, err := db.Query("SELECT Kundenummer, Navn, Epost, Telefon, MedlemskapID, Utløpsdato FROM Kunder")
@@ -263,6 +268,20 @@ func GetTreningstimeHandler(db *sql.DB) gin.HandlerFunc {
 			return
 		}
 		c.JSON(200, tt)
+	}
+}
+
+// Hent alle treningstimer
+func GetAllTreningstimerHandler(db *sql.DB) gin.HandlerFunc {
+	return func(c *gin.Context) {
+		timer, err := database.GetAllTreningstimer(db)
+		if err != nil {
+			// Logg SQL-feil til konsoll for feilsøking
+			fmt.Println("DB-feil /treningstimer:", err)
+			c.JSON(500, gin.H{"error": err.Error()})
+			return
+		}
+		c.JSON(200, timer)
 	}
 }
 

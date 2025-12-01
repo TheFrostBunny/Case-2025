@@ -21,23 +21,8 @@ export default function Profile() {
     async function load() {
       if (!kundenummer) return;
       try {
-        // Backend returns list for /kunde; filter here
-        const all = await fetchKunde(0).catch(() => null); // Fallback attempt
-        // If endpoint /kunde returns array
-        if (Array.isArray(all)) {
-          const match = all.find((k: any) => k.kundenummer === kundenummer || k.Kundenummer === kundenummer);
-          if (match) setData({
-            kundenummer: match.kundenummer || match.Kundenummer,
-            navn: match.navn || match.Navn,
-            epost: match.epost || match.Epost,
-            telefon: match.telefon || match.Telefon,
-            medlemskap_id: match.medlemskap_id || match.MedlemskapID,
-            utlopsdato: match.utlopsdato || match.Utløpsdato || match.utlopsdato,
-            harTreningstimer: match.harTreningstimer || match.HarTreningstimer
-          });
-        } else if (all) {
-          setData(all);
-        }
+        const user = await fetchKunde(kundenummer).catch(() => null);
+        if (user) setData(user);
       } catch (e: any) {
         setError(e?.response?.data?.error || 'Kunne ikke hente profil');
       }

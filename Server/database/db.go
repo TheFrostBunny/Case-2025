@@ -148,6 +148,24 @@ func GetTreningstime(db *sql.DB, id int) (*models.Treningstime, error) {
 	return &tt, nil
 }
 
+// Hent alle treningstimer
+func GetAllTreningstimer(db *sql.DB) ([]models.Treningstime, error) {
+	rows, err := db.Query("SELECT TimeID, ProgramID, Dato, Klokkeslett, Varighet FROM Treningstimer")
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var timer []models.Treningstime
+	for rows.Next() {
+		var tt models.Treningstime
+		if err := rows.Scan(&tt.TimeID, &tt.ProgramID, &tt.Dato, &tt.Klokkeslett, &tt.Varighet); err != nil {
+			return nil, err
+		}
+		timer = append(timer, tt)
+	}
+	return timer, nil
+}
+
 // Ansatt
 func CreateAnsatt(db *sql.DB, a models.Ansatt) (int, error) {
 	res, err := db.Exec("INSERT INTO Ansatte (Navn, Rolle, Telefon, Epost) VALUES (?, ?, ?, ?)", a.Navn, a.Rolle, a.Telefon, a.Epost)

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useAppSelector } from '../store';
-import { fetchMemberships } from '../api/client';
+import { fetchMemberships, fetchGroupClasses } from '../api/client';
 
 interface MembershipType { medlemskap_id?: number; MedlemskapID?: number; type_medlemskap?: string; TypeMedlemskap?: string; pris?: number; Pris?: number; }
 interface Time { TimeID?: number; time_id?: number; Dato?: string; dato?: string; Klokkeslett?: string; klokkeslett?: string; Varighet?: number; varighet?: number; }
@@ -12,9 +12,9 @@ export default function Home() {
 
   useEffect(() => {
     fetchMemberships().then(setMemberships).catch(() => setMemberships([]));
-    // Fetch group classes directly (backend endpoint is /treningstime)
-    fetch('http://localhost:3000/treningstime').then(r => r.json()).then(data => {
+    fetchGroupClasses().then(data => {
       if (Array.isArray(data)) setTimes(data.slice(0, 4));
+      else setTimes([]);
     }).catch(() => {
       setTimes([
         { TimeID: 1, Dato: '2025-12-05', Klokkeslett: '18:00', Varighet: 60 },
@@ -32,13 +32,12 @@ export default function Home() {
             <h1 className="text-4xl font-bold mb-4">Din vei til bedre form</h1>
             <p className="opacity-70 mb-6">Moderne treningssenter med gruppetimer, tilpassede programmer og tilleggstimer for ekstra oppfølging.</p>
             <div className="flex flex-wrap gap-3">
-              {!token && (
+              {!token ? (
                 <>
                   <a href="/medlemskap" className="btn btn-primary">Bli medlem</a>
                   <a href="/login" className="btn btn-outline">Logg inn</a>
                 </>
-              )}
-              {token && (
+              ) : (
                 <>
                   <a href="/profil" className="btn btn-primary">Min profil</a>
                   <a href="/gruppetimer" className="btn btn-secondary">Gruppe timer</a>
@@ -116,21 +115,16 @@ export default function Home() {
       </section>
 
       {/* CTA */}
-      <section className="py-16 text-center">
-        <h2 className="text-3xl font-semibold mb-4">Klar til å starte?</h2>
-        <p className="mb-6 opacity-70">Registrer deg og kom i gang med treningen i dag.</p>
-        {!token ? (
+      {!token && (
+        <section className="py-16 text-center">
+          <h2 className="text-3xl font-semibold mb-4">Klar til å starte?</h2>
+          <p className="mb-6 opacity-70">Registrer deg og kom i gang med treningen i dag.</p>
           <div className="flex justify-center gap-4">
             <a href="/medlemskap" className="btn btn-primary">Bli medlem</a>
             <a href="/login" className="btn btn-outline">Logg inn</a>
           </div>
-        ) : (
-          <div className="flex justify-center gap-4">
-            <a href="/profil" className="btn btn-primary">Min profil</a>
-            <a href="/gruppetimer" className="btn btn-secondary">Gruppetimer</a>
-          </div>
-        )}
-      </section>
+        </section>
+      )}
     </div>
   );
 }

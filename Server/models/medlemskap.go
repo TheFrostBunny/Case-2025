@@ -45,11 +45,11 @@ type KundeProgram struct {
 }
 
 type Treningstime struct {
-	TimeID      int       `json:"time_id"`
-	ProgramID   int       `json:"program_id"`
-	Dato        time.Time `json:"dato"`
-	Klokkeslett string    `json:"klokkeslett"` // TIME
-	Varighet    int       `json:"varighet"`    // minutter
+	TimeID      int    `json:"time_id"`
+	ProgramID   int    `json:"program_id"`
+	Dato        string `json:"dato"`
+	Klokkeslett string `json:"klokkeslett"`
+	Varighet    int    `json:"varighet"`
 }
 
 type Ansatt struct {

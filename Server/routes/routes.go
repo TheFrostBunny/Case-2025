@@ -23,6 +23,7 @@ func RegisterRoutes(r *gin.Engine) {
 	// Kunde
 	r.POST("/kunde", handlers.CreateKundeHandler(database.DB))
 	r.GET("/kunde", handlers.GetKundeHandler(database.DB))
+	r.GET("/kunde/:id", handlers.GetKundeHandler(database.DB))
 
 	// Betaling
 	r.POST("/betaling", handlers.CreateBetalingHandler(database.DB))
@@ -39,6 +40,7 @@ func RegisterRoutes(r *gin.Engine) {
 	// Treningstime
 	r.POST("/treningstime", handlers.CreateTreningstimeHandler(database.DB))
 	r.GET("/treningstime", handlers.GetTreningstimeHandler(database.DB))
+	r.GET("/treningstimer", handlers.GetAllTreningstimerHandler(database.DB))
 
 	// Ansatt
 	r.POST("/ansatt", handlers.CreateAnsattHandler(database.DB))

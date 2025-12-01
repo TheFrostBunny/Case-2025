@@ -16,7 +16,10 @@ export default function GroupClasses() {
   const { kundenummer } = useAppSelector(s => s.auth);
 
   useEffect(() => {
-    fetchGroupClasses().then(setList).catch(() => setList([]));
+    fetchGroupClasses().then(data => {
+      if (Array.isArray(data)) setList(data);
+      else setList([]);
+    }).catch(() => setList([]));
   }, []);
 
   async function handleJoin(id: number) {
@@ -32,7 +35,7 @@ export default function GroupClasses() {
   return (
     <div className="max-w-3xl mx-auto mt-10">
       <h2 className="text-2xl font-semibold mb-4">Gruppe timer</h2>
-      {list.length === 0 && <div className="alert alert-info">Ingen timer tilgjengelig (placeholder).</div>}
+      {list.length === 0 && <div className="alert alert-info">Ingen timer tilgjengelig.</div>}
       <div className="grid md:grid-cols-2 gap-4">
         {list.map(t => {
           const id = t.time_id || t.TimeID;
