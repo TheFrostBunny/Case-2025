@@ -25,9 +25,10 @@ export default function Login() {
 
   return (
     <div className="max-w-md mx-auto mt-10">
-      <div className="card bg-base-100 shadow">
+      <div className="card bg-base-100 shadow-xl border border-base-300">
         <div className="card-body">
-          <h2 className="card-title">Logg inn</h2>
+          <h2 className="card-title">Logg inn <span className="badge badge-secondary">Tilgang</span></h2>
+          <p className="text-sm opacity-70">Bruk epost og passord fra registreringen.</p>
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="form-control">
               <label className="label"><span className="label-text">Epost</span></label>

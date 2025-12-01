@@ -1,4 +1,5 @@
 import { BrowserRouter, Routes, Route, Link, Navigate } from 'react-router-dom';
+import Home from './components/Home';
 import Login from './components/Login';
 import Profile from './components/Profile';
 import Membership from './components/Membership';
@@ -19,6 +20,7 @@ function App() {
         </div>
         <div className="flex-none gap-2">
           <ul className="menu menu-horizontal px-1">
+            <li><Link to="/">Hjem</Link></li>
             <li><Link to="/login">Login</Link></li>
             <li><Link to="/medlemskap">Medlemskap</Link></li>
             {token && <li><Link to="/profil">Profil</Link></li>}
@@ -28,11 +30,11 @@ function App() {
         </div>
       </div>
       <Routes>
+        <Route path="/" element={<Home />} />
         <Route path="/login" element={ token ? <Navigate to="/profil" /> : <Login /> } />
         <Route path="/medlemskap" element={<Membership />} />
         <Route path="/gruppetimer" element={<ProtectedRoute><GroupClasses /></ProtectedRoute>} />
         <Route path="/profil" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
-        <Route path="/" element={<Navigate to={ token ? '/profil' : '/login'} />} />
         <Route path="*" element={<Navigate to="/" />} />
       </Routes>
     </BrowserRouter>

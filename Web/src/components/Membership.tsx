@@ -66,10 +66,12 @@ export default function Membership() {
 
   return (
     <div className="max-w-2xl mx-auto mt-10">
-      <div className="card bg-base-100 shadow">
+      <div className="card bg-base-100 shadow-xl border border-base-300">
         <div className="card-body">
-          <h2 className="card-title">Bli medlem</h2>
-          <form onSubmit={handleSubmit} className="grid md:grid-cols-2 gap-4">
+          <h2 className="card-title">Bli medlem <div className="badge badge-primary">Ny</div></h2>
+          <p className="text-sm opacity-70 mb-2">Fyll inn detaljer for å opprette konto.</p>
+          <div className="divider mb-0">Detaljer</div>
+          <form onSubmit={handleSubmit} className="grid md:grid-cols-2 gap-4 mt-4">
             <div className="form-control md:col-span-1">
               <label className="label"><span className="label-text">Navn</span></label>
               <input name="navn" value={form.navn} onChange={handleChange} required className="input input-bordered" />
@@ -109,7 +111,8 @@ export default function Membership() {
               </label>
             </div>
             {result && <div className="alert alert-info md:col-span-2">{result}</div>}
-            <div className="md:col-span-2 flex justify-end">
+            <div className="md:col-span-2 flex justify-between mt-2">
+              <div className="text-xs opacity-60">Data sendes sikkert til serveren.</div>
               <button type="submit" disabled={loading} className="btn btn-primary">{loading ? 'Sender...' : 'Registrer'}</button>
             </div>
           </form>
