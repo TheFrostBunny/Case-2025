@@ -33,7 +33,7 @@ export default function Home() {
           <p className="font-semibold text-sm md:text-base">
             0,-/mnd. til april – ingen binding!
           </p>
-          <a href="/medlemskap" className="btn btn-sm md:btn-md btn-secondary">Gå til kampanjer</a>
+          <Link to="/medlemskap" className="btn btn-sm md:btn-md btn-secondary">Gå til kampanjer</Link>
         </div>
       </section>
 
@@ -116,7 +116,7 @@ export default function Home() {
                   <p className="text-2xl font-bold">{pris} kr<span className="text-sm font-normal">/mnd</span></p>
                   <p className="text-xs opacity-60">Inkluderer grunnleggende fasiliteter.</p>
                   <div className="card-actions justify-end mt-4">
-                    <a href="/medlemskap" className="btn btn-sm btn-primary">Velg</a>
+                    <Link to="/medlemskap" className="btn btn-sm btn-primary">Velg</Link>
                   </div>
                 </div>
               </div>
@@ -144,7 +144,7 @@ export default function Home() {
                     <p className="text-sm">{dato} {klokke}</p>
                     <p className="text-xs opacity-60">Varighet: {varighet} min</p>
                     <div className="card-actions justify-end">
-                      <a href="/gruppetimer" className="btn btn-xs btn-secondary">Se mer</a>
+                      <Link to="/gruppetimer" className="btn btn-xs btn-secondary">Se mer</Link>
                     </div>
                   </div>
                 </div>
