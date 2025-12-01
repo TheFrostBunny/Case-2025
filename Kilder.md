@@ -6,6 +6,7 @@ https://daisyui.com/
 https://tailwindcss.com/docs/installation/using-vite
 https://vite.dev/
 https://go.dev/doc/tutorial/database-access
+https://dbdiagram.io/home (Brukt for å lage et diagram over databasen)
 
 
 
