@@ -33,8 +33,8 @@ export default function GroupClasses() {
   }
 
   return (
-    <div className="max-w-3xl mx-auto mt-10">
-      <h2 className="text-2xl font-semibold mb-4">Gruppe timer</h2>
+    <div className="max-w-3xl mx-auto mt-10" aria-labelledby="gruppetimer-heading">
+      <h1 id="gruppetimer-heading" className="text-2xl font-semibold mb-4">Gruppe timer</h1>
       {list.length === 0 && <div className="alert alert-info">Ingen timer tilgjengelig.</div>}
       <div className="grid md:grid-cols-2 gap-4">
         {list.map(t => {
@@ -53,7 +53,7 @@ export default function GroupClasses() {
           );
         })}
       </div>
-      {message && <div className="alert alert-success mt-4">{message}</div>}
+      {message && <div className="alert alert-success mt-4" role="status" aria-live="polite">{message}</div>}
     </div>
   );
 }

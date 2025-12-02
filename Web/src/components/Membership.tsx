@@ -68,7 +68,7 @@ export default function Membership() {
     <div className="max-w-2xl mx-auto mt-10">
       <div className="card bg-base-100 shadow-xl border border-base-300">
         <div className="card-body">
-          <h2 className="card-title">Bli medlem</h2>
+          <h1 className="card-title text-2xl">Bli medlem</h1>
           <p className="text-sm opacity-70 mb-2">Fyll inn detaljer for å opprette konto.</p>
           <div className="divider mb-0">Detaljer</div>
           <form onSubmit={handleSubmit} className="grid md:grid-cols-2 gap-4 mt-4">
@@ -110,7 +110,7 @@ export default function Membership() {
                 <input type="checkbox" name="har_treningstimer" checked={form.har_treningstimer} onChange={handleChange} className="checkbox checkbox-primary" />
               </label>
             </div>
-            {result && <div className="alert alert-info md:col-span-2">{result}</div>}
+            {result && <div className="alert alert-info md:col-span-2" role="status" aria-live="polite">{result}</div>}
             <div className="md:col-span-2 flex justify-between mt-2">
               <div className="text-xs opacity-60">Data sendes sikkert til serveren.</div>
               <button type="submit" disabled={loading} className="btn btn-primary">{loading ? 'Sender...' : 'Registrer'}</button>

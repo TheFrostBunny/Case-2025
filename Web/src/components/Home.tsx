@@ -39,18 +39,19 @@ export default function Home() {
 
       <section className="bg-base-100">
         <div className="max-w-6xl mx-auto px-4 py-6">
-          <div className="carousel w-full rounded-xl shadow">
-            {galleryImages.map((src, idx) => (
+          <div className="carousel w-full rounded-xl shadow" aria-roledescription="carousel">
+            {galleryImages.map((image, idx) => (
               <div
                 key={idx}
                 className={`carousel-item relative w-full ${idx === currentSlide ? "block" : "hidden"}`}
               >
-                <img src={src} alt={`Galleri ${idx+1}`} className="w-full h-64 md:h-96 object-cover" />
+                <img src={image.src} alt={image.alt} className="w-full h-64 md:h-96 object-cover" />
                 <div className="absolute left-4 right-4 bottom-4 flex justify-between">
                   <button
                     type="button"
                     className="btn btn-circle btn-sm"
                     onClick={() => setCurrentSlide((prev) => (prev === 0 ? galleryImages.length - 1 : prev - 1))}
+                    aria-label="Forrige bilde"
                   >
                     ❮
                   </button>
@@ -58,6 +59,7 @@ export default function Home() {
                     type="button"
                     className="btn btn-circle btn-sm"
                     onClick={() => setCurrentSlide((prev) => (prev === galleryImages.length - 1 ? 0 : prev + 1))}
+                    aria-label="Neste bilde"
                   >
                     ❯
                   </button>
@@ -90,7 +92,7 @@ export default function Home() {
 
           <div className="card bg-base-100 shadow-xl w-full max-w-md">
             <div className="card-body">
-              <h2 className="card-title">Hvorfor oss?</h2>
+              <h2 className="card-title" id="hvorfor-oss">Hvorfor oss?</h2>
               <ul className="list-disc list-inside space-y-1 text-sm">
                 <li>Fleksible medlemskap</li>
                 <li>Personlig oppfølging</li>
@@ -103,7 +105,7 @@ export default function Home() {
       </section>
 
       <section className="py-12 max-w-6xl mx-auto px-4">
-        <h2 className="text-3xl font-semibold mb-6">Medlemskap</h2>
+        <h2 className="text-3xl font-semibold mb-6" id="seksjon-medlemskap">Medlemskap</h2>
         <div className="grid md:grid-cols-3 gap-6">
           {memberships.map(m => {
             const id = m.medlemskap_id || m.MedlemskapID;
@@ -130,7 +132,7 @@ export default function Home() {
 
       <section className="py-12 bg-base-200">
         <div className="max-w-6xl mx-auto px-4">
-          <h2 className="text-3xl font-semibold mb-6">Neste gruppetimer</h2>
+          <h2 className="text-3xl font-semibold mb-6" id="seksjon-gruppetimer">Neste gruppetimer</h2>
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
             {times.map(t => {
               const id = t.time_id || t.TimeID;
@@ -157,7 +159,7 @@ export default function Home() {
 
       {!token && (
         <section className="py-16 text-center">
-          <h2 className="text-3xl font-semibold mb-4">Klar til å starte?</h2>
+          <h2 className="text-3xl font-semibold mb-4" id="call-to-action">Klar til å starte?</h2>
           <p className="mb-6 opacity-70">Registrer deg og kom i gang med treningen i dag.</p>
           <div className="flex justify-center gap-4">
             <Link to="/medlemskap" className="btn btn-primary">Bli medlem</Link>

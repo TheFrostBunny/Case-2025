@@ -52,7 +52,7 @@ export default function Profile() {
     <div className="max-w-xl mx-auto mt-10">
       <div className="card bg-base-100 shadow">
         <div className="card-body">
-          <h2 className="card-title">Din profil</h2>
+          <h1 className="card-title text-2xl">Din profil</h1>
           <div className="overflow-x-auto">
             <table className="table">
               <tbody>
