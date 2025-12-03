@@ -10,17 +10,22 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout repo
+        uses: actions/checkout@v4
 
       - name: Set up Go
         uses: actions/setup-go@v4
         with:
           go-version: '1.20'
 
-      - name: Build Server
+      - name: Build Server (ensure modules)
         working-directory: ./Server
         run: |
-          go mod download
+          if [ ! -f go.mod ]; then
+            echo "No go.mod found in Server — aborting."
+            exit 1
+          fi
+          go mod tidy
           go build -v ./...
 
       - name: Test Server
